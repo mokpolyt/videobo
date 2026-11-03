@@ -100,6 +100,9 @@
   #t1 thead th { background: var(--tosca); border-bottom: 3px solid var(--blue); }
   #t2 thead th { background: var(--amber-dark); border-bottom: 3px solid var(--amber); }
 
+  th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+  th.sortable:hover { text-decoration: underline; filter: brightness(1.25); }
+  th.sortable:active { transform: scale(.95); }
   tbody td { padding: 10px 14px; vertical-align: top; position: relative; min-width: 110px; cursor: pointer; user-select: none; }
   #t1 tbody td { border: 1px solid var(--blue); color: var(--tosca); }
   #t2 tbody td { border: 1px solid var(--amber); color: var(--amber-text); }
@@ -143,6 +146,13 @@
   .emoji-pop { position: fixed; z-index: 99; font-size: 26px; pointer-events: none; animation: up 1s ease-out forwards; }
   @keyframes up { to { transform: translateY(-90px) scale(1.8) rotate(25deg); opacity: 0; } }
 
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); z-index: 100;
+    background: #111; color: #fff; border: 1px solid #3b82f6; padding: 8px 16px; border-radius: 999px;
+    font-size: 14px; opacity: 0; transition: .25s; pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
   }
@@ -156,7 +166,7 @@
 <section id="t1">
   <div class="bar"><h2>📺 KOLEKSI</h2><button class="plus" title="Tambah baris" aria-label="Tambah baris">+</button></div>
   <div class="wrap"><table>
-    <thead><tr><th>Title</th><th>URL</th><th>Topic</th><th>Summary</th><th>Transcript</th></tr></thead>
+    <thead><tr><th>Title</th><th>URL</th><th class="sortable" title="Klik untuk urutkan A–Z">Topic ▲</th><th>Summary</th><th>Transcript</th></tr></thead>
     <tbody></tbody>
   </table></div>
 </section>
@@ -225,13 +235,25 @@ function emojiPop(x, y) {
   setTimeout(() => e.remove(), 1000);
 }
 
+let toastEl, toastTimer;
+function toast(msg) {
+  if (!toastEl) { toastEl = document.createElement("div"); toastEl.className = "toast"; document.body.appendChild(toastEl); }
+  toastEl.textContent = msg; toastEl.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => toastEl.classList.remove("show"), 1800);
+}
+
 async function persist(t, row, isNew) {
   if (t.remote) {
     const q = isNew ? sb.from(t.name).insert(row) : sb.from(t.name).update(row).eq("id", row.id);
     const { error } = await q;
-    if (error) statusEl.textContent = "⚠️ Gagal simpan ke Supabase: " + error.message;
+    if (error) { statusEl.textContent = "⚠️ Gagal simpan ke Supabase: " + error.message; toast("⚠️ Gagal simpan"); }
+    else toast("✅ Tersimpan ke Supabase");
   } else {
-    try { localStorage.setItem(t.store, JSON.stringify(t.rows)); } catch (e) {}
+    try { localStorage.setItem(t.store, JSON.stringify(t.rows)); toast("✅ Tersimpan di browser"); }
+    catch (e) {
+      statusEl.textContent = "🔴 Tidak bisa menyimpan: penyimpanan browser diblokir di sini. Buka file ini langsung di browser (atau lewat GitHub Pages) dan isi Supabase.";
+      toast("⚠️ Tidak tersimpan");
+    }
   }
 }
 
@@ -289,6 +311,13 @@ function makeCell(t, row, col) {
     if (link) setHref(link, row[col]);
     persist(t, row, false);
   });
+  let timer;
+  val.addEventListener("input", () => {
+    row[col] = val.textContent.trim();
+    if (link) setHref(link, row[col]);
+    clearTimeout(timer);
+    timer = setTimeout(() => persist(t, row, false), 500);
+  });
   return td;
 }
 
@@ -336,6 +365,22 @@ async function init(t) {
     t.rows.push(row);
     renderRow(t, row, true);
     persist(t, row, true);
+  });
+
+  const th = root.querySelector("th.sortable");
+  if (th) th.addEventListener("click", () => {
+    const key = x => (x.topic || "").trim();
+    t.rows.sort((a, b) => {
+      const x = key(a), y = key(b);
+      if (!x && !y) return 0;
+      if (!x) return 1;   // empty topics go last
+      if (!y) return -1;
+      return x.localeCompare(y, undefined, { sensitivity: "base", numeric: true });
+    });
+    t.tbody.innerHTML = "";
+    t.rows.forEach(r => renderRow(t, r, false));
+    if (!t.remote) { try { localStorage.setItem(t.store, JSON.stringify(t.rows)); } catch (e) {} }
+    toast("🔤 Diurutkan A → Z");
   });
 }
 
