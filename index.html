@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YUCUB KOLEKSI GREAT</title>
+<style>
+  :root {
+    --tosca: #0b4f4f;
+    --blue: #1e63c6;
+    --light-blue: #dcebfa;
+    --white: #ffffff;
+    --amber: #ffb000;
+    --amber-dark: #b34700;
+    --amber-light: #ffe3b8;
+    --amber-cream: #fff6e6;
+    --amber-text: #5a2600;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #000; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--white);
+    min-height: 100vh;
+    padding: 28px 20px 80px;
+    position: relative;
+    overflow-x: hidden;
+  }
+  /* ---------- background ---------- */
+  body::before {
+    content: ""; position: fixed; inset: -20%; z-index: -2;
+    background:
+      radial-gradient(40% 35% at 20% 25%, rgba(30,99,198,.35), transparent 70%),
+      radial-gradient(35% 30% at 80% 20%, rgba(11,150,150,.30), transparent 70%),
+      radial-gradient(45% 40% at 70% 85%, rgba(255,176,0,.18), transparent 70%),
+      radial-gradient(30% 30% at 10% 90%, rgba(160,60,255,.20), transparent 70%);
+    animation: drift 22s ease-in-out infinite alternate;
+  }
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image:
+      radial-gradient(1.5px 1.5px at 20px 30px, #fff, transparent),
+      radial-gradient(1px 1px at 90px 120px, #9cf, transparent),
+      radial-gradient(1.5px 1.5px at 160px 70px, #fff, transparent),
+      radial-gradient(1px 1px at 230px 180px, #7fe, transparent),
+      radial-gradient(1px 1px at 300px 40px, #fff, transparent);
+    background-size: 320px 220px;
+    animation: twinkle 4s ease-in-out infinite alternate;
+  }
+  @keyframes drift { from { transform: translate(-3%, -2%) scale(1); } to { transform: translate(3%, 2%) scale(1.12); } }
+  @keyframes twinkle { from { opacity: .35; } to { opacity: 1; } }
+
+  .floaty { position: fixed; z-index: -1; font-size: 28px; opacity: .5; animation: float 14s linear infinite; pointer-events: none; }
+  @keyframes float { from { transform: translateY(110vh) rotate(0); } to { transform: translateY(-20vh) rotate(360deg); } }
+
+  /* ---------- title ---------- */
+  h1 {
+    text-align: center; margin: 10px 0 6px; font-size: clamp(28px, 6vw, 56px);
+    letter-spacing: .08em; font-weight: 900;
+  }
+  h1 span {
+    display: inline-block;
+    background: linear-gradient(90deg, #19d3c5, #3b82f6, #a5d8ff, #fff, #19d3c5);
+    background-size: 300% 100%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: wave 1.6s ease-in-out infinite, shine 5s linear infinite;
+  }
+  @keyframes wave { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-10px) rotate(-4deg); } }
+  @keyframes shine { to { background-position: 300% 0; } }
+  .status {
+    text-align: center; font-size: 13px; color: #9fc3e8; margin-bottom: 26px;
+  }
+
+  /* ---------- sections ---------- */
+  section { max-width: 1200px; margin: 0 auto 56px; }
+  .bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 12px; }
+  .bar h2 { margin: 0; font-size: 20px; letter-spacing: .06em; }
+  #t1 .bar h2 { color: #7fd6ff; }
+  #t2 .bar h2 { color: var(--amber); }
+
+  .plus {
+    width: 46px; height: 46px; border-radius: 50%; border: 0; cursor: pointer;
+    font-size: 30px; line-height: 1; font-weight: 700; color: #fff;
+    animation: bounce 1.4s ease-in-out infinite;
+    transition: transform .3s;
+  }
+  #t1 .plus { background: linear-gradient(135deg, var(--blue), #19d3c5); box-shadow: 0 0 18px rgba(30,99,198,.8); }
+  #t2 .plus { background: linear-gradient(135deg, var(--amber-dark), var(--amber)); box-shadow: 0 0 18px rgba(255,176,0,.7); }
+  .plus:hover { transform: rotate(180deg) scale(1.15); animation-play-state: paused; }
+  .plus:active { transform: rotate(360deg) scale(.9); }
+  @keyframes bounce { 0%,100% { translate: 0 0; } 50% { translate: 0 -6px; } }
+
+  .wrap { overflow-x: auto; border-radius: 10px; }
+  table { width: 100%; border-collapse: collapse; min-width: 800px; }
+  #t2 table { min-width: 640px; }
+  #t1 table { border: 2px solid var(--blue); box-shadow: 0 0 24px rgba(30,99,198,.45); }
+  #t2 table { border: 2px solid var(--amber); box-shadow: 0 0 24px rgba(255,176,0,.35); }
+
+  thead th { text-align: left; padding: 12px 14px; color: #fff; }
+  #t1 thead th { background: var(--tosca); border-bottom: 3px solid var(--blue); }
+  #t2 thead th { background: var(--amber-dark); border-bottom: 3px solid var(--amber); }
+
+  tbody td { padding: 10px 14px; vertical-align: top; position: relative; min-width: 110px; cursor: pointer; user-select: none; }
+  #t1 tbody td { border: 1px solid var(--blue); color: var(--tosca); }
+  #t2 tbody td { border: 1px solid var(--amber); color: var(--amber-text); }
+  #t1 tbody tr:nth-child(odd) { background: var(--white); }
+  #t1 tbody tr:nth-child(even) { background: var(--light-blue); }
+  #t2 tbody tr:nth-child(odd) { background: var(--amber-cream); }
+  #t2 tbody tr:nth-child(even) { background: var(--amber-light); }
+  tbody tr:hover { filter: brightness(.96); }
+  tbody tr.pop { animation: pop .6s cubic-bezier(.3,1.8,.5,1); }
+  @keyframes pop { from { transform: scale(.2) rotate(-8deg); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  .val { display: inline-block; min-width: 40px; outline: none; word-break: break-word; }
+  .val:empty::before { content: "klik untuk isi…"; opacity: .4; font-style: italic; }
+  .go { margin-left: 6px; text-decoration: none; font-weight: 800; color: var(--blue); }
+  #t2 .go { color: var(--amber-dark); }
+
+  td.open { cursor: text; user-select: text; outline: 3px dashed #19d3c5; outline-offset: -3px; background: #fffbe0 !important; animation: glow 1s ease-in-out infinite alternate; }
+  @keyframes glow { to { box-shadow: inset 0 0 14px rgba(25,211,197,.7); } }
+
+  .badge {
+    position: absolute; right: 4px; bottom: 2px; font-size: 11px; font-weight: 800;
+    padding: 1px 6px; border-radius: 999px; background: #111; color: #fff;
+    opacity: 0; transform: scale(.5); transition: .2s; pointer-events: none;
+  }
+  .badge.show { opacity: .9; transform: scale(1); }
+
+  .del {
+    position: absolute; left: -2px; top: -2px; width: 20px; height: 20px; border: 0; border-radius: 50%;
+    background: #e5484d; color: #fff; font-size: 12px; cursor: pointer; opacity: 0; transition: .2s; line-height: 20px; padding: 0;
+  }
+  tr:hover .del { opacity: 1; }
+
+  /* silly click animations */
+  .a-wob   { animation: wob .45s; }
+  .a-jelly { animation: jelly .5s; }
+  .a-flip  { animation: flip .5s; }
+  @keyframes wob   { 0%,100% { transform: rotate(0); } 20% { transform: rotate(-12deg) scale(1.1); } 40% { transform: rotate(10deg); } 60% { transform: rotate(-6deg); } 80% { transform: rotate(4deg); } }
+  @keyframes jelly { 0%,100% { transform: scale(1,1); } 30% { transform: scale(1.35,.7); } 50% { transform: scale(.75,1.3); } 70% { transform: scale(1.15,.9); } }
+  @keyframes flip  { from { transform: rotateX(0); } to { transform: rotateX(360deg); } }
+
+  .emoji-pop { position: fixed; z-index: 99; font-size: 26px; pointer-events: none; animation: up 1s ease-out forwards; }
+  @keyframes up { to { transform: translateY(-90px) scale(1.8) rotate(25deg); opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<h1 id="title">YUCUB KOLEKSI GREAT</h1>
+<div class="status" id="status">Memuat…</div>
+
+<section id="t1">
+  <div class="bar"><h2>📺 KOLEKSI</h2><button class="plus" title="Tambah baris" aria-label="Tambah baris">+</button></div>
+  <div class="wrap"><table>
+    <thead><tr><th>Title</th><th>URL</th><th>Topic</th><th>Summary</th><th>Transcript</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+</section>
+
+<section id="t2">
+  <div class="bar"><h2>💡 INSPIRASI</h2><button class="plus" title="Tambah baris" aria-label="Tambah baris">+</button></div>
+  <div class="wrap"><table>
+    <thead><tr><th>Inspirasi Judul</th><th>Summary</th><th>Keterangan dan URL</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+</section>
+
+<span class="floaty" style="left:8%;animation-duration:16s">✨</span>
+<span class="floaty" style="left:30%;animation-duration:20s;animation-delay:-6s">📺</span>
+<span class="floaty" style="left:55%;animation-duration:13s;animation-delay:-3s">🎬</span>
+<span class="floaty" style="left:78%;animation-duration:18s;animation-delay:-9s">⭐</span>
+<span class="floaty" style="left:92%;animation-duration:22s;animation-delay:-12s">💡</span>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+/* ========== SUPABASE CONFIG: isi dua nilai ini (Project Settings → API) ========== */
+const SUPABASE_URL = "https://gjyeknwtoofpuvoaftfj.supabase.co";       // contoh: https://abcdxyz.supabase.co
+const SUPABASE_ANON_KEY = "sb_publishable_HBf14rn-fWP8AZ_OaLFfag_V6qNKjk5";  // anon public key
+/* ================================================================================ */
+
+const CLICKS_NEEDED = 12;
+const EMOJIS = ["🎉","✨","🤪","🚀","🍕","🦄","🔥","🐸"];
+const ANIMS = ["a-wob", "a-jelly", "a-flip"];
+
+const sb = (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase)
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+const TABLES = [
+  { id: "t1", name: "koleksi",   store: "yucub_koleksi",   cols: ["title", "url", "topic", "summary", "transcript"], urlCol: "url" },
+  { id: "t2", name: "inspirasi", store: "yucub_inspirasi", cols: ["judul", "summary", "keterangan_url"], urlCol: null }
+];
+
+const statusEl = document.getElementById("status");
+const uid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()));
+const blank = t => { const r = { id: uid() }; t.cols.forEach(c => r[c] = ""); return r; };
+
+/* wavy title letters */
+const titleEl = document.getElementById("title");
+const titleText = titleEl.textContent;
+titleEl.textContent = "";
+[...titleText].forEach((ch, i) => {
+  const s = document.createElement("span");
+  s.textContent = ch === " " ? "\u00A0" : ch;
+  s.style.animationDelay = (i * 0.08) + "s, 0s";
+  titleEl.appendChild(s);
+});
+
+function setHref(a, v) {
+  v = (v || "").trim();
+  if (!v) { a.removeAttribute("href"); a.style.display = "none"; return; }
+  if (!/^https?:\/\//i.test(v)) v = "https://" + v;
+  a.href = v; a.style.display = "";
+}
+
+function emojiPop(x, y) {
+  const e = document.createElement("span");
+  e.className = "emoji-pop";
+  e.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+  e.style.left = x + "px"; e.style.top = y + "px";
+  document.body.appendChild(e);
+  setTimeout(() => e.remove(), 1000);
+}
+
+async function persist(t, row, isNew) {
+  if (t.remote) {
+    const q = isNew ? sb.from(t.name).insert(row) : sb.from(t.name).update(row).eq("id", row.id);
+    const { error } = await q;
+    if (error) statusEl.textContent = "⚠️ Gagal simpan ke Supabase: " + error.message;
+  } else {
+    try { localStorage.setItem(t.store, JSON.stringify(t.rows)); } catch (e) {}
+  }
+}
+
+function makeCell(t, row, col) {
+  const td = document.createElement("td");
+  const val = document.createElement("span");
+  val.className = "val";
+  val.textContent = row[col] || "";
+  td.appendChild(val);
+
+  let link = null;
+  if (col === t.urlCol) {
+    link = document.createElement("a");
+    link.className = "go"; link.textContent = "↗"; link.target = "_blank"; link.rel = "noopener";
+    setHref(link, row[col]);
+    td.appendChild(link);
+  }
+  const badge = document.createElement("span");
+  badge.className = "badge";
+  td.appendChild(badge);
+
+  let n = 0;
+  const unlock = () => {
+    td.classList.add("open");
+    val.contentEditable = "true";
+    badge.textContent = "✏️ edit!";
+    badge.classList.add("show");
+    val.focus();
+    const r = document.createRange(); r.selectNodeContents(val); r.collapse(false);
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+  };
+  td.addEventListener("click", e => {
+    if (e.target.closest("a.go") || td.classList.contains("open")) return;
+    // empty field: edit straight away
+    if (!val.textContent.trim()) { unlock(); return; }
+    // existing value: needs 12 clicks
+    n++;
+    val.classList.remove(...ANIMS); void val.offsetWidth;
+    val.classList.add(ANIMS[Math.floor(Math.random() * ANIMS.length)]);
+    badge.textContent = n + "/" + CLICKS_NEEDED;
+    badge.classList.add("show");
+    emojiPop(e.clientX, e.clientY);
+    if (n >= CLICKS_NEEDED) unlock();
+  });
+
+  val.addEventListener("keydown", e => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); val.blur(); }
+  });
+  val.addEventListener("blur", () => {
+    if (!td.classList.contains("open")) return;
+    val.contentEditable = "false";
+    td.classList.remove("open");
+    n = 0; badge.classList.remove("show");
+    row[col] = val.textContent.trim();
+    if (link) setHref(link, row[col]);
+    persist(t, row, false);
+  });
+  return td;
+}
+
+function renderRow(t, row, animate) {
+  const tr = document.createElement("tr");
+  if (animate) tr.className = "pop";
+  t.cols.forEach((c, i) => {
+    const td = makeCell(t, row, c);
+    if (i === 0) {
+      const d = document.createElement("button");
+      d.className = "del"; d.textContent = "✕"; d.title = "Hapus baris";
+      d.addEventListener("click", async e => {
+        e.stopPropagation();
+        if (!confirm("Hapus baris ini?")) return;
+        t.rows = t.rows.filter(r => r.id !== row.id);
+        tr.remove();
+        if (t.remote) await sb.from(t.name).delete().eq("id", row.id);
+        else persist(t, row, false);
+      });
+      td.appendChild(d);
+    }
+    tr.appendChild(td);
+  });
+  t.tbody.appendChild(tr);
+}
+
+async function init(t) {
+  const root = document.getElementById(t.id);
+  t.tbody = root.querySelector("tbody");
+  t.rows = null; t.remote = false;
+
+  if (sb) {
+    const { data, error } = await sb.from(t.name).select("*").order("created_at");
+    if (error) statusEl.textContent = "⚠️ Supabase error (" + t.name + "): " + error.message;
+    else { t.rows = data; t.remote = true; }
+  }
+  if (!t.rows) {
+    try { t.rows = JSON.parse(localStorage.getItem(t.store)); } catch (e) {}
+    if (!Array.isArray(t.rows)) t.rows = [blank(t)];
+  }
+  t.rows.forEach(r => renderRow(t, r, false));
+
+  root.querySelector(".plus").addEventListener("click", () => {
+    const row = blank(t);
+    t.rows.push(row);
+    renderRow(t, row, true);
+    persist(t, row, true);
+  });
+}
+
+(async () => {
+  for (const t of TABLES) await init(t);
+  if (!statusEl.textContent.startsWith("⚠️")) {
+    statusEl.textContent = TABLES.every(t => t.remote)
+      ? "🟢 Terhubung ke Supabase"
+      : "🟡 Mode lokal (tersimpan di browser). Isi SUPABASE_URL dan SUPABASE_ANON_KEY untuk pakai Supabase.";
+  }
+})();
+</script>
+</body>
+</html>
