@@ -63,6 +63,7 @@
   .bar h2 { margin: 0; font-size: 20px; letter-spacing: .06em; }
   #t1 .bar h2 { color: #7fd6ff; }
   #t2 .bar h2 { color: var(--amber); }
+  #t3 .bar h2 { color: #c4a5ff; }
 
   .plus {
     width: 46px; height: 46px; border-radius: 50%; border: 0; cursor: pointer;
@@ -70,6 +71,11 @@
   }
   #t1 .plus { background: linear-gradient(135deg, var(--blue), #19d3c5); box-shadow: 0 0 18px rgba(30,99,198,.8); }
   #t2 .plus { background: linear-gradient(135deg, var(--amber-dark), var(--amber)); box-shadow: 0 0 18px rgba(255,176,0,.7); }
+  #t3 .plus { background: linear-gradient(135deg, #5b21b6, #a855f7); box-shadow: 0 0 18px rgba(168,85,247,.75); }
+  #t3 .filter input, #t3 .filter select { border-color: #7c3aed; }
+  #t3 .filter input:focus, #t3 .filter select:focus { border-color: #c4a5ff; }
+  #t3 .filter button { color: #c4a5ff; border-color: #7c3aed; }
+  #t3 .filter button:hover { background: #7c3aed; color: #fff; }
 
   /* ---------- topic filter ---------- */
   .filter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 12px; }
@@ -91,10 +97,12 @@
   #t2 table { min-width: 640px; }
   #t1 table { border: 2px solid var(--blue); box-shadow: 0 0 24px rgba(30,99,198,.45); }
   #t2 table { border: 2px solid var(--amber); box-shadow: 0 0 24px rgba(255,176,0,.35); }
+  #t3 table { border: 2px solid #7c3aed; box-shadow: 0 0 24px rgba(124,58,237,.45); min-width: 760px; }
 
   thead th { text-align: left; padding: 12px 14px; color: #fff; }
   #t1 thead th { background: var(--tosca); border-bottom: 3px solid var(--blue); }
   #t2 thead th { background: var(--amber-dark); border-bottom: 3px solid var(--amber); }
+  #t3 thead th { background: #3b1a73; border-bottom: 3px solid #a855f7; }
 
   th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
   th.sortable:hover { text-decoration: underline; filter: brightness(1.25); }
@@ -102,16 +110,20 @@
   tbody td { padding: 10px 14px; vertical-align: top; position: relative; min-width: 110px; cursor: pointer; user-select: none; }
   #t1 tbody td { border: 1px solid var(--blue); color: var(--tosca); }
   #t2 tbody td { border: 1px solid var(--amber); color: var(--amber-text); }
+  #t3 tbody td { border: 1px solid #7c3aed; color: #2e1065; }
   #t1 tbody tr:nth-child(odd) { background: var(--white); }
   #t1 tbody tr:nth-child(even) { background: var(--light-blue); }
   #t2 tbody tr:nth-child(odd) { background: var(--amber-cream); }
   #t2 tbody tr:nth-child(even) { background: var(--amber-light); }
+  #t3 tbody tr:nth-child(odd) { background: #f8f3ff; }
+  #t3 tbody tr:nth-child(even) { background: #e9dcff; }
   tbody tr:hover { filter: brightness(.96); }
 
   .val { display: inline-block; min-width: 40px; outline: none; word-break: break-word; white-space: pre-wrap; }
   .val:empty::before { content: "klik untuk isi…"; opacity: .4; font-style: italic; }
   .go { margin-left: 6px; text-decoration: none; font-weight: 800; color: var(--blue); }
   #t2 .go { color: var(--amber-dark); }
+  #t3 .go { color: #7c3aed; }
 
   td.open { cursor: text; user-select: text; outline: 3px dashed #19d3c5; outline-offset: -3px; background: #fffbe0 !important; }
 
@@ -176,14 +188,34 @@
 <section id="t1">
   <div class="bar"><h2>📺 KOLEKSI</h2><button class="plus" title="Tambah baris" aria-label="Tambah baris">+</button></div>
   <div class="filter">
-    <input type="search" id="fText" placeholder="🔎 Cari topic…" list="topicList" autocomplete="off" aria-label="Cari topic">
-    <datalist id="topicList"></datalist>
-    <select id="fSelect" aria-label="Filter topic"><option value="">Semua topic</option></select>
-    <button type="button" id="fReset">Reset</button>
-    <span class="count" id="fCount"></span>
+    <input type="search" class="fText" placeholder="🔎 Cari topic…" list="topicList1" autocomplete="off" aria-label="Cari topic">
+    <datalist id="topicList1"></datalist>
+    <select class="fSelect" aria-label="Filter topic"><option value="">Semua topic</option></select>
+    <button type="button" class="fReset">Reset</button>
+    <span class="count fCount"></span>
   </div>
   <div class="wrap"><table>
-    <thead><tr><th>Title</th><th>URL</th><th class="sortable" title="Klik untuk urutkan A–Z">Topic ▲</th><th>Summary</th><th>Transcript</th></tr></thead>
+    <thead><tr><th>Title</th><th>URL</th><th class="sortable" data-col="topic" data-label="Topic" title="Klik: A–Z, klik lagi: Z–A">Topic ⇅</th><th>Summary</th><th>Transcript</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+</section>
+
+<section id="t3">
+  <div class="bar"><h2>🧵 THREADS</h2><button class="plus" title="Tambah baris" aria-label="Tambah baris">+</button></div>
+  <div class="filter">
+    <input type="search" class="fText" placeholder="🔎 Cari topic…" list="topicList3" autocomplete="off" aria-label="Cari topic">
+    <datalist id="topicList3"></datalist>
+    <select class="fSelect" aria-label="Filter topic"><option value="">Semua topic</option></select>
+    <button type="button" class="fReset">Reset</button>
+    <span class="count fCount"></span>
+  </div>
+  <div class="wrap"><table>
+    <thead><tr>
+      <th class="sortable" data-col="nama" data-label="Nama" title="Klik: A–Z, klik lagi: Z–A">Nama ⇅</th>
+      <th>URL</th>
+      <th class="sortable" data-col="topic" data-label="Topic" title="Klik: A–Z, klik lagi: Z–A">Topic ⇅</th>
+      <th>Summary</th>
+    </tr></thead>
     <tbody></tbody>
   </table></div>
 </section>
@@ -234,7 +266,8 @@ const sb = (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase)
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 const TABLES = [
-  { id: "t1", name: "koleksi",   store: "yucub_koleksi",   cols: ["title", "url", "topic", "summary", "transcript"], urlCol: "url" },
+  { id: "t1", name: "koleksi",   store: "yucub_koleksi",   cols: ["title", "url", "topic", "summary", "transcript"], urlCol: "url", filter: true },
+  { id: "t3", name: "threads",   store: "yucub_threads",   cols: ["nama", "url", "topic", "summary"], urlCol: "url", filter: true },
   { id: "t2", name: "inspirasi", store: "yucub_inspirasi", cols: ["judul", "summary", "keterangan_url"], urlCol: null }
 ];
 
@@ -271,12 +304,12 @@ async function persist(t, row, isNew) {
   }
 }
 
-/* ========== TOPIC FILTER (koleksi) ========== */
-function applyFilter() {
-  const t = TABLES[0];
-  if (!t.tbody) return;
-  const txt = document.getElementById("fText").value.trim().toLowerCase();
-  const sel = document.getElementById("fSelect").value;
+/* ========== TOPIC FILTER (per table: koleksi, threads) ========== */
+function applyFilter(t) {
+  if (!t.tbody || !t.filter) return;
+  const root = document.getElementById(t.id);
+  const txt = root.querySelector(".fText").value.trim().toLowerCase();
+  const sel = root.querySelector(".fSelect").value;
   let shown = 0;
   t.rows.forEach((r, i) => {
     const tr = t.tbody.children[i];
@@ -286,27 +319,22 @@ function applyFilter() {
     tr.classList.toggle("hidden", !ok);
     if (ok) shown++;
   });
-  document.getElementById("fCount").textContent = shown + " / " + t.rows.length + " baris";
+  root.querySelector(".fCount").textContent = shown + " / " + t.rows.length + " baris";
 }
-function refreshTopics() {
-  const t = TABLES[0];
+function refreshTopics(t) {
+  const root = document.getElementById(t.id);
   const topics = [...new Set(t.rows.map(r => (r.topic || "").trim()).filter(Boolean))]
     .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base", numeric: true }));
-  const sel = document.getElementById("fSelect");
+  const sel = root.querySelector(".fSelect");
   const keep = sel.value;
   sel.innerHTML = '<option value="">Semua topic</option>';
   topics.forEach(x => { const o = document.createElement("option"); o.value = x; o.textContent = x; sel.appendChild(o); });
   sel.value = topics.includes(keep) ? keep : "";
-  const dl = document.getElementById("topicList");
+  const dl = root.querySelector("datalist");
   dl.innerHTML = "";
   topics.forEach(x => { const o = document.createElement("option"); o.value = x; dl.appendChild(o); });
 }
-function refreshFilter() { refreshTopics(); applyFilter(); }
-document.getElementById("fText").addEventListener("input", applyFilter);
-document.getElementById("fSelect").addEventListener("change", () => { document.getElementById("fText").value = ""; applyFilter(); });
-document.getElementById("fReset").addEventListener("click", () => {
-  document.getElementById("fText").value = ""; document.getElementById("fSelect").value = ""; applyFilter();
-});
+function refreshFilter(t) { if (!t.filter) return; refreshTopics(t); applyFilter(t); }
 
 function makeCell(t, row, col) {
   const td = document.createElement("td");
@@ -358,7 +386,7 @@ function makeCell(t, row, col) {
     row[col] = val.textContent.trim();
     if (link) setHref(link, row[col]);
     persist(t, row, false);
-    if (t.id === "t1" && col === "topic") refreshFilter();
+    if (t.filter && col === "topic") refreshFilter(t);
   });
   let timer;
   val.addEventListener("input", () => {
@@ -382,7 +410,7 @@ function renderRow(t, row) {
         if (!confirm("Hapus baris ini?")) return;
         t.rows = t.rows.filter(r => r.id !== row.id);
         tr.remove();
-        if (t.id === "t1") refreshFilter();
+        refreshFilter(t);
         if (t.remote) await sb.from(t.name).delete().eq("id", row.id);
         else persist(t, row, false);
       });
@@ -414,30 +442,45 @@ async function init(t) {
     t.rows.push(row);
     renderRow(t, row);
     persist(t, row, true);
-    if (t.id === "t1") refreshFilter();
+    refreshFilter(t);
   });
 
-  const th = root.querySelector("th.sortable");
-  if (th) th.addEventListener("click", () => {
-    const key = x => (x.topic || "").trim();
+  if (t.filter) {
+    const fText = root.querySelector(".fText"), fSel = root.querySelector(".fSelect");
+    fText.addEventListener("input", () => applyFilter(t));
+    fSel.addEventListener("change", () => { fText.value = ""; applyFilter(t); });
+    root.querySelector(".fReset").addEventListener("click", () => { fText.value = ""; fSel.value = ""; applyFilter(t); });
+  }
+
+  // sortable headers: first click A→Z, second click Z→A
+  const dirs = {};
+  root.querySelectorAll("th.sortable").forEach(th => th.addEventListener("click", () => {
+    const col = th.dataset.col;
+    const dir = dirs[col] === "asc" ? "desc" : "asc";
+    Object.keys(dirs).forEach(k => delete dirs[k]);
+    dirs[col] = dir;
+    const key = x => (x[col] || "").trim();
     t.rows.sort((a, b) => {
       const x = key(a), y = key(b);
       if (!x && !y) return 0;
-      if (!x) return 1;   // empty topics go last
+      if (!x) return 1;   // empty values always go last
       if (!y) return -1;
-      return x.localeCompare(y, undefined, { sensitivity: "base", numeric: true });
+      const c = x.localeCompare(y, undefined, { sensitivity: "base", numeric: true });
+      return dir === "asc" ? c : -c;
     });
+    root.querySelectorAll("th.sortable").forEach(h => h.textContent = h.dataset.label + " ⇅");
+    th.textContent = th.dataset.label + (dir === "asc" ? " ▲" : " ▼");
     t.tbody.innerHTML = "";
     t.rows.forEach(r => renderRow(t, r));
-    applyFilter();
+    applyFilter(t);
     if (!t.remote) { try { localStorage.setItem(t.store, JSON.stringify(t.rows)); } catch (e) {} }
-    toast("🔤 Diurutkan A → Z");
-  });
+    toast(dir === "asc" ? "🔤 " + th.dataset.label + ": A → Z" : "🔤 " + th.dataset.label + ": Z → A");
+  }));
 }
 
 (async () => {
   for (const t of TABLES) await init(t);
-  refreshFilter();
+  TABLES.forEach(refreshFilter);
   if (!statusEl.textContent.startsWith("⚠️")) {
     statusEl.textContent = TABLES.every(t => t.remote)
       ? "🟢 Terhubung ke Supabase"
